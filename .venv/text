@@ -1,0 +1,33 @@
+from fairmlhealth import report, measure
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import BernoulliNB
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
+from fairlearn.datasets import fetch_diabetes_hospital
+
+data = fetch_diabetes_hospital()
+
+X = pd.get_dummies(data.data)
+y = data.target
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model_1 = DecisionTreeClassifier(random_state=42)
+model_1.fit(X_train, y_train)
+
+report = report.compare(test_data=X_test,
+                        targets=y_test,
+                        protected_attr={"Caucasian": X_test["race_Caucasian"],
+                                        "AfricanAmerican": X_test["race_AfricanAmerican"],
+                                        "Asian": X_test["race_Asian"],
+                                        "Female": X_test["gender_Female"],
+                                        "Male": X_test["gender_Male"]},
+                        models=model_1
+                        )
+
+report.to_html("/Users/felixdiederichs/Desktop/Wirtschaftsinformatik/Thesis/Code/test/.venv/reports/test_report.html")
+
+
+

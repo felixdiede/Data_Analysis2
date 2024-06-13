@@ -1,0 +1,1 @@
+File "/Users/felixdiederichs/PycharmProjects/Results_Analysis/.venv/lib/python3.8/site-packages/fairmlhealth/__utils.py", line 375, in apply_flag -> auskommentiert: styled = styled.set_precision(sig_fig)
